@@ -1922,7 +1922,7 @@ function createSofa(x, y, z, rotation = 0) {
     const sofa = new THREE.Group();
 
     const fabric = new THREE.MeshStandardMaterial({
-        color: "#3e1a08",
+        color: "#6f4f4f",
         roughness: 0.9
     });
 
@@ -1959,6 +1959,7 @@ function createSofa(x, y, z, rotation = 0) {
     sofa.rotation.y = rotation;
 
     sofa.userData.type = "sofa";
+    sofa.userData.sitRadius = 5;
 
     scene.add(sofa);
 
@@ -2860,7 +2861,9 @@ dialogueNext.textContent = "Close";
     // ---------- Sit Down ----------
     for (const bench of benches) {
 
-        if (player.position.distanceTo(bench.position) < 2.5) {
+      const radius = bench.userData.sitRadius || 2.5;
+
+if (player.position.distanceTo(bench.position) < radius) {
 
             currentSeat = bench;
             isSitting = true;
@@ -2995,16 +2998,19 @@ else if (flowerPrompt) {
  // ==========================================
     // Sit Prompt Check
     // ==========================================
-    let nearBench = false;
+  let nearBench = false;
 
-    for (const bench of benches) {
-        const distance = player.position.distanceTo(bench.position);
+for (const bench of benches) {
 
-        if (distance < 2.5) {
-            nearBench = true;
-            break;
-        }
+    const distance = player.position.distanceTo(bench.position);
+
+    const radius = bench.userData.sitRadius || 2.5;
+
+    if (distance < radius) {
+        nearBench = true;
+        break;
     }
+}
 
     if (sitPrompt) {
         sitPrompt.style.display = nearBench ? "block" : "none";

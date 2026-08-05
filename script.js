@@ -2342,8 +2342,8 @@ function createChessQueen(x, y, z) {
 }
 createFloorLamp(18, 0, 22);
 createChessBoard(-13.7, 8.1, 19);
-createChessKing(-14, 8.3, 22);
-createChessQueen(-11.8, 8.3, 22);
+createChessKing(-15, 8.3, 22);
+createChessQueen(-11.8, 8.3, 19);
 
 // Left of entrance
 createDoorLamp(-3.8, 0, 27);
@@ -2474,7 +2474,7 @@ function createFlower() {
     flower.position.set(
         0,
         8.15,
-        -22.8
+        -20
     );
     flower.scale.set(2, 2, 2);
     scene.add(flower);
@@ -3246,7 +3246,7 @@ dialogueNext.addEventListener("click", () => {
 
             dialogueBox.style.display = "none";
 
-            dialogueNext.textContent = "Next ▶";
+            dialogueNext.textContent = "Enter ▶";
 
             document.body.requestPointerLock();
 
@@ -3264,7 +3264,7 @@ dialogueNext.addEventListener("click", () => {
 
         dialogueBox.style.display = "none";
 
-        dialogueNext.textContent = "Next ▶";
+        dialogueNext.textContent = "Enter ▶";
 
         return;
     }
@@ -3361,7 +3361,7 @@ if (e.code === "KeyC") {
 
     const chickenDistance = player.position.distanceTo(giantChicken.position);
 
-    if (chickenDistance < 7) {
+    if (chickenDistance < 3) {
 
         chickenTalked = true;
         chickenPrompt.style.display = "none";
@@ -3372,7 +3372,7 @@ if (e.code === "KeyC") {
         dialogueBox.style.display = "block";
         dialogueText.textContent = chickenDialogues[0];
 
-        dialogueNext.textContent = "Next ▶";
+        dialogueNext.textContent = "Enter ▶";
 
     }
 

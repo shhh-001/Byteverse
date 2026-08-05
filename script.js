@@ -128,10 +128,6 @@ const voxelTree = createVoxelTree();
 // Size scaling (fit nicely within the museum lobby frame)
 voxelTree.scale.set(1, 1, 1);
 
-// Positioning:
-// X: 0 (Centered directly in front of the middle wall)
-// Y: 0 (Flushed to the floor surface)
-// Z: Bring it safely forward (e.g. -4 to -5) so canopy never intersects the back wall
 voxelTree.position.set(0, 0, -4.5); 
 
 scene.add(voxelTree);
@@ -2127,6 +2123,53 @@ function createWallLight(x, y, z) {
 
     scene.add(lightGroup);
 }
+
+function createChessBoard(x, y, z) {
+
+    // Create checkerboard texture
+    const size = 512;
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+
+    const ctx = canvas.getContext("2d");
+
+    const squares = 8;
+    const squareSize = size / squares;
+
+    for (let row = 0; row < squares; row++) {
+        for (let col = 0; col < squares; col++) {
+
+            ctx.fillStyle = (row + col) % 2 === 0
+                ? "#f5f5dc"      // light squares
+                : "#222222";     // dark squares
+
+            ctx.fillRect(
+                col * squareSize,
+                row * squareSize,
+                squareSize,
+                squareSize
+            );
+        }
+    }
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+
+    const board = new THREE.Mesh(
+        new THREE.BoxGeometry(11.3, 0.2, 10),
+        new THREE.MeshStandardMaterial({
+            map: texture,
+            roughness: 0.6
+        })
+    );
+
+    board.position.set(x, y, z);
+    board.receiveShadow = true;
+    board.castShadow = true;
+
+    scene.add(board);
+}
 // ==========================================
 // Decorative Black King Chess Piece
 // ==========================================
@@ -2208,8 +2251,99 @@ function createChessKing(x, y, z) {
 
     scene.add(king);
 }
+function createChessQueen(x, y, z) {
+
+    const queen = new THREE.Group();
+
+    const whiteMat = new THREE.MeshStandardMaterial({
+        color: "#f5f5f5",
+        roughness: 0.25,
+        metalness: 0.35
+    });
+
+    // Base
+    const base = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.9, 1.1, 0.45, 32),
+        whiteMat
+    );
+    base.position.y = 0.22;
+    queen.add(base);
+
+    // Lower Body
+    const lower = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.55, 0.8, 1.2, 32),
+        whiteMat
+    );
+    lower.position.y = 1;
+    queen.add(lower);
+
+    // Belly
+    const belly = new THREE.Mesh(
+        new THREE.SphereGeometry(0.6, 32, 32),
+        whiteMat
+    );
+    belly.scale.set(1, 1.2, 1);
+    belly.position.y = 2;
+    queen.add(belly);
+
+    // Neck
+    const neck = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.28, 0.35, 0.8, 32),
+        whiteMat
+    );
+    neck.position.y = 3;
+    queen.add(neck);
+
+    // Crown Base
+    const crown = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.55, 0.38, 0.7, 32),
+        whiteMat
+    );
+    crown.position.y = 3.8;
+    queen.add(crown);
+
+    // Crown Points
+    const pointGeo = new THREE.ConeGeometry(0.08, 0.25, 16);
+
+    for (let i = 0; i < 6; i++) {
+
+        const angle = (i / 6) * Math.PI * 2;
+
+        const point = new THREE.Mesh(pointGeo, whiteMat);
+
+        point.position.set(
+            Math.cos(angle) * 0.28,
+            4.25,
+            Math.sin(angle) * 0.28
+        );
+
+        queen.add(point);
+    }
+
+    // Top Ball
+    const topBall = new THREE.Mesh(
+        new THREE.SphereGeometry(0.12, 16, 16),
+        whiteMat
+    );
+
+    topBall.position.y = 4.55;
+    queen.add(topBall);
+
+    queen.position.set(x, y, z);
+
+    queen.traverse(obj => {
+        if (obj.isMesh) {
+            obj.castShadow = true;
+            obj.receiveShadow = true;
+        }
+    });
+
+    scene.add(queen);
+}
 createFloorLamp(18, 0, 22);
-createChessKing(-13, 8.3, 22);
+createChessBoard(-13.7, 8.1, 19);
+createChessKing(-14, 8.3, 22);
+createChessQueen(-11.8, 8.3, 22);
 
 // Left of entrance
 createDoorLamp(-3.8, 0, 27);

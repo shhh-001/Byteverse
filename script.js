@@ -3361,7 +3361,7 @@ if (e.code === "KeyC") {
 
     const chickenDistance = player.position.distanceTo(giantChicken.position);
 
-    if (chickenDistance < 3) {
+    if (chickenDistance < 7) {
 
         chickenTalked = true;
         chickenPrompt.style.display = "none";

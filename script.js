@@ -244,7 +244,7 @@ createTrees();
 // ==========================================
 // MATERIALS
 // ==========================================
-const wallMat = new THREE.MeshStandardMaterial({ color: "#f8fafc", roughness: 0.9 });
+const wallMat = new THREE.MeshStandardMaterial({ color: "#f9eaf3", roughness: 0.9 });
 const terracottaMat = new THREE.MeshStandardMaterial({ color: "#b45309", roughness: 0.7 });
 const stoneBaseMat = new THREE.MeshStandardMaterial({ color: "#626064", roughness: 0.8 });
 const trimMat = new THREE.MeshStandardMaterial({ color: "#f1f5f9", roughness: 0.4 });
@@ -2481,6 +2481,331 @@ function createFlower() {
 }
 
 createFlower();
+
+let giantChicken;
+
+function createGiantChicken() {
+
+    giantChicken = new THREE.Group();
+
+    const whiteMat = new THREE.MeshStandardMaterial({
+    color: "#fcfae9",
+    emissive: "#ffffff",
+    emissiveIntensity: 0.15,
+    roughness: 0.8
+});
+
+    const featherMat = new THREE.MeshStandardMaterial({
+        color: "#f3e9c3",
+        roughness: 1
+    });
+
+    const yellowMat = new THREE.MeshStandardMaterial({
+        color: "#facc15"
+    });
+
+    const redMat = new THREE.MeshStandardMaterial({
+        color: "#dc2626"
+    });
+
+    const blackMat = new THREE.MeshStandardMaterial({
+        color: "#111111"
+    });
+
+    const pinkMat = new THREE.MeshStandardMaterial({
+        color: "#ffb6c1"
+    });
+
+    // ==========================================
+    // BODY
+    // ==========================================
+
+    const body = new THREE.Mesh(
+        new THREE.SphereGeometry(1.2, 40, 40),
+        whiteMat
+    );
+
+    body.scale.set(1.2, 1.1, 1.4);
+
+    giantChicken.add(body);
+
+    // ==========================================
+    // BODY FEATHERS
+    // ==========================================
+
+    for (let i = 0; i < 140; i++) {
+
+        const feather = new THREE.Mesh(
+
+            new THREE.SphereGeometry(0.06, 8, 8),
+
+            featherMat
+
+        );
+
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.random() * Math.PI;
+
+        const r = 1.28;
+
+        feather.position.set(
+
+            Math.sin(phi) * Math.cos(theta) * r,
+
+            Math.cos(phi) * r * 0.92,
+
+            Math.sin(phi) * Math.sin(theta) * r * 1.15
+
+        );
+
+        feather.scale.set(1, 0.55, 1.5);
+
+        feather.lookAt(0,0,0);
+
+        giantChicken.add(feather);
+
+    }
+
+    // ==========================================
+    // BELLY
+    // ==========================================
+
+    const belly = new THREE.Mesh(
+
+        new THREE.SphereGeometry(0.72,28,28),
+
+        new THREE.MeshStandardMaterial({
+
+            color:"#f3e9c3"
+
+        })
+
+    );
+
+    belly.scale.set(1.05,1.1,0.8);
+
+    belly.position.set(0,-0.1,0.95);
+
+    giantChicken.add(belly);
+
+    // ==========================================
+    // HEAD
+    // ==========================================
+
+    const head = new THREE.Mesh(
+
+        new THREE.SphereGeometry(0.62,32,32),
+
+        whiteMat
+
+    );
+
+    head.position.set(0,1.2,1.1);
+
+    giantChicken.add(head);
+   // ==========================================
+// BEAK
+// ==========================================
+
+const beak = new THREE.Mesh(
+
+    new THREE.ConeGeometry(0.22, 0.55, 4),
+
+    yellowMat
+
+);
+
+beak.rotation.x = Math.PI / 2;
+
+// Move forward slightly
+beak.position.set(0, 1.14, 1.82);
+
+giantChicken.add(beak);
+
+// ==========================================
+// COMB
+// ==========================================
+const combGroup = new THREE.Group();
+[
+    [-0.22,1.68,1.02],
+    [-0.11,1.78,1.05],
+    [0,1.84,1.08],
+    [0.11,1.78,1.05],
+    [0.22,1.68,1.02]
+].forEach(pos=>{
+
+    const comb = new THREE.Mesh(
+
+        new THREE.SphereGeometry(0.11,18,18),
+
+        redMat
+
+    );
+
+    comb.position.set(...pos);
+
+    giantChicken.add(comb);
+
+
+});
+
+// ==========================================
+// EYES
+// ==========================================
+
+[-0.18,0.18].forEach(x=>{
+
+    const eyeWhite = new THREE.Mesh(
+
+        new THREE.SphereGeometry(0.10,18,22),
+
+        new THREE.MeshStandardMaterial({
+
+            color:"#ffffff"
+
+        })
+
+    );
+
+    eyeWhite.position.set(x,1.28,1.48);
+
+    giantChicken.add(eyeWhite);
+
+    const pupil = new THREE.Mesh(
+
+        new THREE.SphereGeometry(0.05,16,16),
+
+        blackMat
+
+    );
+
+    pupil.position.set(x,1.28,1.7);
+
+    giantChicken.add(pupil);
+
+    const shine = new THREE.Mesh(
+
+        new THREE.SphereGeometry(0.015,8,8),
+
+        new THREE.MeshStandardMaterial({
+
+            color:"#060606",
+
+            emissive:"#ffffff",
+
+            emissiveIntensity:1
+
+        })
+
+    );
+
+    shine.position.set(x+0.02,1.31,1.59);
+
+    giantChicken.add(shine);
+
+});
+
+// ==========================================
+// WINGS
+// ==========================================
+
+[-1,1].forEach(side=>{
+
+    const wing = new THREE.Mesh(
+
+        new THREE.SphereGeometry(0.45,24,24),
+
+        whiteMat
+
+    );
+
+    wing.scale.set(0.7,1.3,1);
+
+    wing.position.set(side,0.15,0.9);
+
+    giantChicken.add(wing);
+
+
+});
+
+// ==========================================
+// LEGS
+// ==========================================
+
+[-0.35,0.35].forEach(x=>{
+
+    const leg = new THREE.Mesh(
+
+        new THREE.CylinderGeometry(0.07,0.07,0.3,12),
+
+        yellowMat
+
+    );
+
+    leg.position.set(x,-1.2,0.25);
+
+    giantChicken.add(leg);
+
+
+});
+
+// ==========================================
+// TAIL
+// ==========================================
+
+for(let i=-3;i<=3;i++){
+
+    const feather = new THREE.Mesh(
+
+        new THREE.ConeGeometry(0.2,0.9,6),
+
+        featherMat
+
+    );
+
+    feather.rotation.x = -Math.PI/3;
+
+    feather.rotation.z = i*0.18;
+
+    feather.position.set(
+
+        0,
+
+        0.65,
+
+        -1.35
+
+    );
+
+    giantChicken.add(feather);
+
+}
+
+// ==========================================
+// POSITION
+// ==========================================
+
+giantChicken.position.set(
+    -13.5,
+    2.8,
+    19
+);
+
+giantChicken.scale.set(
+    2,
+    2,
+    2
+);
+
+giantChicken.rotation.y = 3 * Math.PI / 4;
+
+scene.add(giantChicken);
+colliders.push(giantChicken);
+
+}
+
+createGiantChicken();
+
 // ==========================================
 // POLAR BEAR CHARACTER & PHYSICS SYSTEM
 // ==========================================
@@ -2490,7 +2815,7 @@ const player = new THREE.Group();
 
 // Materials
 const polarWhiteMat = new THREE.MeshStandardMaterial({
-    color: "#f5f5f0",
+    color: "#ffffff",
     roughness: 0.9
 });
 
@@ -2838,10 +3163,12 @@ const overlay = document.getElementById("overlay");
 const doorPrompt = document.getElementById("door-prompt");
 const sitPrompt = document.getElementById("sit-prompt");
 const flowerPrompt = document.getElementById("flower-prompt");
+const chickenPrompt = document.getElementById("chicken-prompt");
 const keys = {};
 let isSitting = false;
 let currentSeat = null;
 let flowerCollected = false;
+let chickenTalked = false;
 let cameraYaw = Math.PI, cameraPitch = 0.1, isPointerLocked = false;
 
 const dialogueBox = document.getElementById("dialogue-box");
@@ -2865,6 +3192,25 @@ const dialogues = [
 ];
 
 let dialogueIndex = 0;
+const chickenDialogues = [
+    "You actually pressed C!!",
+    "Good. That means the developer's interaction code works.",
+    "Welcome to Byteverse🌑!!!",
+    "You're probably wondering who built this incredible museum🤔",
+    "...It was me 😎",
+    "You're probably also wondering why a giant chicken is an architect.",
+    "Stop asking difficult questions 🐥",
+    "It got slightly out of hand.",
+    "Then I remembered your sketches deserved better than staying in a sketchbook forever.",
+    "So now they're hanging on walls like the masterpieces they are 💫 ",
+    "Don't touch anything. Actually... go ahead. I built it sturdy enough to survive you 😉",
+    "Now go explore. I'll pretend I'm not waiting for you to tell me how amazing I am 🐔✨"
+
+];
+
+let chickenDialogueIndex = 0;
+let isChickenDialogue = false;
+
 
 if (overlay) {
 
@@ -2882,16 +3228,50 @@ if (overlay) {
 
 dialogueNext.addEventListener("click", () => {
 
-    // If this is the flower prank message,
-    // simply close the bubble.
+    // ==========================================
+    // Chicken Dialogue
+    // ==========================================
+    if (isChickenDialogue) {
+
+        chickenDialogueIndex++;
+
+        if (chickenDialogueIndex < chickenDialogues.length) {
+
+            dialogueText.textContent =
+                chickenDialogues[chickenDialogueIndex];
+
+        } else {
+
+            isChickenDialogue = false;
+
+            dialogueBox.style.display = "none";
+
+            dialogueNext.textContent = "Next ▶";
+
+            document.body.requestPointerLock();
+
+            toggleAudio(true);
+
+        }
+
+        return;
+    }
+
+    // ==========================================
+    // Flower Dialogue
+    // ==========================================
     if (dialogueText.textContent === "🌸 Gotcha!") {
 
         dialogueBox.style.display = "none";
+
         dialogueNext.textContent = "Next ▶";
 
         return;
     }
 
+    // ==========================================
+    // Intro Dialogue
+    // ==========================================
     dialogueIndex++;
 
     if (dialogueIndex < dialogues.length) {
@@ -2942,6 +3322,13 @@ document.addEventListener("keydown", (e) => {
             if (doorPrompt) doorPrompt.style.display = "none";
         }
     }
+    if (e.code === "Enter" && dialogueBox.style.display === "block") {
+
+    e.preventDefault();
+    dialogueNext.click();
+    return;
+
+}
     // ==========================================
 // Pick Flower
 // ==========================================
@@ -2962,6 +3349,30 @@ dialogueText.textContent = "You are Gay!";
 
 // Change button text
 dialogueNext.textContent = "Close";
+
+    }
+
+}
+// ==========================================
+// Talk to Chicken
+// ==========================================
+
+if (e.code === "KeyC") {
+
+    const chickenDistance = player.position.distanceTo(giantChicken.position);
+
+    if (chickenDistance < 7) {
+
+        chickenTalked = true;
+        chickenPrompt.style.display = "none";
+
+        isChickenDialogue = true;
+        chickenDialogueIndex = 0;
+
+        dialogueBox.style.display = "block";
+        dialogueText.textContent = chickenDialogues[0];
+
+        dialogueNext.textContent = "Next ▶";
 
     }
 
@@ -3112,6 +3523,23 @@ function animate() {
             doorPrompt.style.display = "none";
         }
     }
+
+  // ==========================================
+// Chicken Prompt Check
+// ==========================================
+
+if (chickenPrompt && giantChicken && !chickenTalked) {
+
+    const chickenDistance = player.position.distanceTo(giantChicken.position);
+
+    chickenPrompt.style.display =
+        chickenDistance < 7 ? "block" : "none";
+
+} else if (chickenPrompt) {
+
+    chickenPrompt.style.display = "none";
+
+}
     // ==========================================
 // Flower Prompt Check
 // ==========================================
@@ -3127,6 +3555,32 @@ if (flowerPrompt && flower && !flowerCollected) {
 else if (flowerPrompt) {
 
     flowerPrompt.style.display = "none";
+
+}
+
+// ==========================================
+// Chicken Prompt Check
+// ==========================================
+
+if (chickenPrompt && giantChicken && !chickenTalked) {
+
+    const chickenDistance = player.position.distanceTo(giantChicken.position);
+
+    if (chickenDistance < 7) {
+
+        chickenPrompt.style.display = "block";
+        chickenPrompt.textContent = 'Press "C" to talk to Chicken';
+
+    } else {
+
+        chickenPrompt.style.display = "none";
+
+    }
+
+}
+else if (chickenPrompt) {
+
+    chickenPrompt.style.display = "none";
 
 }
  // ==========================================
@@ -3161,4 +3615,5 @@ window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-});
+}
+);

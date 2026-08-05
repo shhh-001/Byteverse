@@ -2343,7 +2343,7 @@ function createChessQueen(x, y, z) {
 createFloorLamp(18, 0, 22);
 createChessBoard(-13.7, 8.1, 19);
 createChessKing(-14, 8.3, 22);
-
+createChessQueen(-11.8, 8.3, 22);
 
 // Left of entrance
 createDoorLamp(-3.8, 0, 27);

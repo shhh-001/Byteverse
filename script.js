@@ -2851,11 +2851,11 @@ const dialogueNext = document.getElementById("dialogue-next");
 const dialogues = [
 `Once upon a time...
 
-...a sketchbook met a genie.`,
+...a Polar Bear met a genie.`,
 
 `The genie offered it one wish.`,
 
-`The sketchbook thought for a long time...
+`The Polar Bear thought for a long time...
 
 ...and finally whispered its wish.`,
 
